@@ -3,17 +3,19 @@ import os
 import csv
 import time
 from datetime import datetime, timedelta
+from urllib.parse import quote
 class CheckForChange():
     def __init__(self, website, targetPhrase, timestamp):
         request = requests.get(website)
-        fileName = f"websiteContent/{website.replace('/', '_')}.txt"
+        #fileName = f"websiteContent/{website.replace('/', '_')}.txt"
+        fileName = f"websiteContent/{quote(website, safe='')}.txt"
         storageDirectory = "websiteContent"
         if not os.path.exists(storageDirectory):
             os.makedirs(storageDirectory)
         if os.path.isfile(fileName):
             CheckForChange.compareWebsite(self, fileName, request, targetPhrase, timestamp)
         else:
-            with open(fileName, 'w') as file:
+            with open(fileName, 'w', encoding='utf-8') as file:
                 file.write(request.content.decode()) 
                 time.sleep(20)
 
@@ -26,7 +28,7 @@ class CheckForChange():
         else:
             #update saved content 
             print("New content")
-            with open(fileName, 'w') as file:
+            with open(fileName, 'w', encoding='utf-8') as file:
                 file.write(request.content.decode()) 
             if targetPhrase in request.content.decode():
                 #check timestamp if within 24 hours do not alert

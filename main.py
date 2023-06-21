@@ -4,22 +4,22 @@ import csv
 import time
 from datetime import datetime, timedelta
 from urllib.parse import quote
+from alert import alertProccess
 class CheckForChange():
     def __init__(self, website, targetPhrase, timestamp):
         request = requests.get(website)
-        #fileName = f"websiteContent/{website.replace('/', '_')}.txt"
         fileName = f"websiteContent/{quote(website, safe='')}.txt"
         storageDirectory = "websiteContent"
         if not os.path.exists(storageDirectory):
             os.makedirs(storageDirectory)
         if os.path.isfile(fileName):
-            CheckForChange.compareWebsite(self, fileName, request, targetPhrase, timestamp)
+            CheckForChange.compareWebsite(self, fileName, request, targetPhrase, timestamp, website)
         else:
             with open(fileName, 'w', encoding='utf-8') as file:
                 file.write(request.content.decode()) 
                 time.sleep(20)
 
-    def compareWebsite(self, fileName, request, targetPhrase, timestamp):
+    def compareWebsite(self, fileName, request, targetPhrase, timestamp, website):
         with open(fileName, "r") as file:
             savedVersion = file.read()
         if request.content.decode() == savedVersion:
@@ -54,12 +54,12 @@ class CheckForChange():
                     with open("targets.csv", "w", newline='') as file:
                         writer = csv.writer(file, delimiter=",")
                         writer.writerows(rows)
-                    CheckForChange.alert(self)
+                    CheckForChange.alert(self, website)
             else:
                 time.sleep(20)
 
-    def alert(self):
-        print("test")
+    def alert(self, website):
+        alertProccess(self, website)
         time.sleep(20)
 
 rows = []  # Initialize an empty list to store rows
@@ -83,10 +83,12 @@ for row in rows:
 
         # Insert the timestamp after the "In stock" column
         row.insert(2, time_24_hours_ago_str)
+    
 
 with open("targets.csv", "w", newline='') as file:
     writer = csv.writer(file, delimiter=",")
     writer.writerows(rows)
+    
 
 for row in rows:
     website = row[0].strip('[]"')

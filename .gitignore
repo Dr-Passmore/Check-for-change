@@ -3,3 +3,4 @@ api.py
 .vscode/settings.json
 config.ini
 __pycache__/alert.cpython-38.pyc
+__pycache__/alert.cpython-310.pyc

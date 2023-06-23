@@ -6,6 +6,10 @@ from datetime import datetime, timedelta
 from urllib.parse import quote
 from bs4 import BeautifulSoup
 from alert import alertProccess
+
+# TODO - fix broken URL for Cool Components pi 0 2
+# TODO - Comment up code 
+
 class CheckForChange():
     def __init__(self, website, targetPhrase, timestamp):
         print(website)
@@ -18,21 +22,25 @@ class CheckForChange():
             CheckForChange.compareWebsite(self, fileName, request, targetPhrase, timestamp, website)
         else:
             with open(fileName, 'w', encoding='utf-8') as file:
-                file.write(request.content.decode()) 
+                soup = BeautifulSoup(request.content, 'html.parser')
+                visible_text = soup.get_text()
+                file.write(visible_text)
                 time.sleep(20)
 
     def compareWebsite(self, fileName, request, targetPhrase, timestamp, website):
         with open(fileName, "r", encoding='utf-8') as file:
             savedVersion = file.read()
-        if request.content.decode() == savedVersion:
+        soup = BeautifulSoup(request.content, 'html.parser')
+        if soup.get_text() == savedVersion:
             print("Website is the same")
             time.sleep(20)
         else:
             #update saved content 
             print("New content")
             with open(fileName, 'w', encoding='utf-8') as file:
-                file.write(request.content.decode()) 
-            soup = BeautifulSoup(request.content, 'html.parser')
+                visible_text = soup.get_text()
+                file.write(visible_text)
+            
             if targetPhrase in soup.get_text():
                 #check timestamp if within 24 hours do not alert
                 timestamp_str = timestamp
@@ -62,7 +70,8 @@ class CheckForChange():
                 time.sleep(20)
 
     def alert(self, website):
-        alertProcessInstance = alertProccess(website)
+        print("cats are awesome")
+        #alertProcessInstance = alertProccess(website)
         time.sleep(20)
 
 rows = []  # Initialize an empty list to store rows

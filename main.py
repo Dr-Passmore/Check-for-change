@@ -4,9 +4,11 @@ import csv
 import time
 from datetime import datetime, timedelta
 from urllib.parse import quote
+from bs4 import BeautifulSoup
 from alert import alertProccess
 class CheckForChange():
     def __init__(self, website, targetPhrase, timestamp):
+        print(website)
         request = requests.get(website)
         fileName = f"websiteContent/{quote(website, safe='')}.txt"
         storageDirectory = "websiteContent"
@@ -20,7 +22,7 @@ class CheckForChange():
                 time.sleep(20)
 
     def compareWebsite(self, fileName, request, targetPhrase, timestamp, website):
-        with open(fileName, "r") as file:
+        with open(fileName, "r", encoding='utf-8') as file:
             savedVersion = file.read()
         if request.content.decode() == savedVersion:
             print("Website is the same")
@@ -30,7 +32,8 @@ class CheckForChange():
             print("New content")
             with open(fileName, 'w', encoding='utf-8') as file:
                 file.write(request.content.decode()) 
-            if targetPhrase in request.content.decode():
+            soup = BeautifulSoup(request.content, 'html.parser')
+            if targetPhrase in soup.get_text():
                 #check timestamp if within 24 hours do not alert
                 timestamp_str = timestamp
                 print(timestamp_str)
@@ -59,7 +62,7 @@ class CheckForChange():
                 time.sleep(20)
 
     def alert(self, website):
-        alertProccess(self, website)
+        alertProcessInstance = alertProccess(website)
         time.sleep(20)
 
 rows = []  # Initialize an empty list to store rows

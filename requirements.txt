@@ -1,0 +1,4 @@
+vonage
+configparser
+beautifulsoup4
+requests

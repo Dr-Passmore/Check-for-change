@@ -1,5 +1,5 @@
 api.py
-*.txt
+websiteContent/*
 .vscode/settings.json
 config.ini
 __pycache__/alert.cpython-38.pyc

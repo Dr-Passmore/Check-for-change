@@ -1,25 +1,51 @@
-import requests
+# Standard Library
 import os
 import csv
 import time
 from datetime import datetime, timedelta
 from urllib.parse import quote
+# External Library
+import requests
 from bs4 import BeautifulSoup
+# Local Imports
 from alert import alertProccess
 
-# TODO - fix broken URL for Cool Components pi 0 2
+
 # TODO - Comment up code 
 
 class CheckForChange():
+    '''
+    Class checks for change in the target website. 
+    '''
     def __init__(self, website, targetPhrase, timestamp):
+        '''
+        Initialisation of the CheckForChange Class. 
+        Confirms that the websiteContent folder exists (if not it creates the folder)
+        Checks to see if the website has been stored as a .txt file.
+        If the website has not been previously stored it creates a .txt file of the visible text content. 
+        If the website has previously been processed __init__ calles the compareWebsite function
+        '''
+
         print(website)
+        # Gets the webpage
         request = requests.get(website)
-        fileName = f"websiteContent/{quote(website, safe='')}.txt"
+        
+        # creates a storage directory varible
         storageDirectory = "websiteContent"
+
+        # creates a filename varible
+        fileName = f"{storageDirectory}/{quote(website, safe='')}.txt"
+        
+        # Checks whether the storageDirectory exists
         if not os.path.exists(storageDirectory):
+            # Creates directory if it does not exist
             os.makedirs(storageDirectory)
+        
+        # If the fileName exists compare current website content with previously recorded
         if os.path.isfile(fileName):
             CheckForChange.compareWebsite(self, fileName, request, targetPhrase, timestamp, website)
+
+        # if the website is seen for the first time it will create a file and populate with the visible website text
         else:
             with open(fileName, 'w', encoding='utf-8') as file:
                 soup = BeautifulSoup(request.content, 'html.parser')
@@ -74,15 +100,24 @@ class CheckForChange():
         #alertProcessInstance = alertProccess(website)
         time.sleep(20)
 
-rows = []  # Initialize an empty list to store rows
+# Initialise an empty list to store rows
+rows = []  
 
+# Read all rows into a list
 with open("targets.csv", "r") as f:
     reader = csv.reader(f, delimiter=",")
-    rows = list(reader)  # Read all rows into a list
+    rows = list(reader)  
 
+# For each item in Rows
 for row in rows:
+    
+    # Get the URL
     website = row[0].strip('[]"')
+    
+    # get target phrase for webpage
     targetPhrase = row[1].strip('[]"')
+    
+    # First time running with the a new URL, the script adds a time stamp 24 hours previously (This is to prevent the item going into stock within 24 hours)
     if len(row) < 3:
         # Get the current timestamp
         current_time = datetime.now()
@@ -96,12 +131,12 @@ for row in rows:
         # Insert the timestamp after the "In stock" column
         row.insert(2, time_24_hours_ago_str)
     
-
+# Writes the rows back to the CSV
 with open("targets.csv", "w", newline='') as file:
     writer = csv.writer(file, delimiter=",")
     writer.writerows(rows)
     
-
+# Runs CheckForChange class passing website, targetPhrase, and timestamp variables for each row
 for row in rows:
     website = row[0].strip('[]"')
     targetPhrase = row[1].strip('[]"')

@@ -1,18 +1,22 @@
-import vonage
-import configparser
+# Standard Library Imports
 import os
+import configparser
+import logging
+# External Library
+import vonage
 
 class alertProccess():
     def __init__(self, website) -> None:
-        print(website)
+        logging.info(f"{website} has triggered an alert!")
         config_file = configparser.ConfigParser()
         if os.path.isfile("config.ini"):
-            print("File found")
+            logging.info("Config.ini exists")
             
         else: 
-            print("Creating config file")
+            logging.info('Process to create config file started')
             alertProccess.create_config(self, config_file)
-            print("config.ini file has been created")
+            logging.info("config.ini file has been created")
+            
         
         config_file.read("config.ini")
         key = config_file.get('Vonage API', 'key')
@@ -22,7 +26,7 @@ class alertProccess():
         alertProccess.send_message(self, config_file, sms, website)
         
     def send_message(self, config_file, sms, website):
-        
+        logging.info("Message being sent")
         responseData = sms.send_message(
             {
                 "from": "Dr Passmore",
@@ -38,10 +42,10 @@ class alertProccess():
         # ADD SECTION
         config_file.add_section("Vonage API")
 
-        key = input("Please input API key")
-        secret = input("Please input API secret")
-        country = input("Please input country code - UK for example is 44")
-        phonenumber = input("Please input phone number for text")
+        key = input("Please input API key: ")
+        secret = input("Please input API secret: ")
+        country = input("Please input country code - UK for example is 44: ")
+        phonenumber = input("Please input phone number for text (remove the starting 0): ")
         
         # ADD SETTINGS TO SECTION
         config_file.set("Vonage API", "key", key)
@@ -59,4 +63,9 @@ class alertProccess():
             configfileObj.flush()
             configfileObj.close()
         
-            
+# Logging
+logging.basicConfig(filename='checkforchange.log', 
+                    filemode='a', 
+                    level=logging.INFO,
+                    format='%(asctime)s %(levelname)s %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S')

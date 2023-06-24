@@ -4,3 +4,4 @@ api.py
 config.ini
 __pycache__/alert.cpython-38.pyc
 __pycache__/alert.cpython-310.pyc
+checkforchange.log

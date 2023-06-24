@@ -4,6 +4,8 @@ import csv
 import time
 from datetime import datetime, timedelta
 from urllib.parse import quote
+import logging
+import configparser
 # External Library
 import requests
 from bs4 import BeautifulSoup
@@ -26,7 +28,7 @@ class CheckForChange():
         If the website has previously been processed __init__ calles the compareWebsite function
         '''
 
-        print(website)
+        logging.info(f"The target website: {website} is being checked")
         # Gets the webpage
         request = requests.get(website)
         
@@ -41,12 +43,19 @@ class CheckForChange():
             # Creates directory if it does not exist
             os.makedirs(storageDirectory)
         
+        if not os.path.isfile("config.ini"):
+            config_file = configparser.ConfigParser()
+            logging.info('Process to create config file started')
+            configcreation = alertProccess.create_config(self, config_file)
+            
+
         # If the fileName exists compare current website content with previously recorded
         if os.path.isfile(fileName):
             CheckForChange.compareWebsite(self, fileName, request, targetPhrase, timestamp, website)
 
         # if the website is seen for the first time it will create a file and populate with the visible website text
         else:
+            logging.info(f"First time {website} has been processed. txt file created")
             with open(fileName, 'w', encoding='utf-8') as file:
                 soup = BeautifulSoup(request.content, 'html.parser')
                 visible_text = soup.get_text()
@@ -58,34 +67,35 @@ class CheckForChange():
             savedVersion = file.read()
         soup = BeautifulSoup(request.content, 'html.parser')
         if soup.get_text() == savedVersion:
-            print("Website is the same")
+            logging.info("The website remains unchanged from the last check")
             time.sleep(20)
         else:
             #update saved content 
-            print("New content")
+            logging.info("New content has been detected - txt file has been updated")
             with open(fileName, 'w', encoding='utf-8') as file:
                 visible_text = soup.get_text()
                 file.write(visible_text)
             
             if targetPhrase in soup.get_text():
+                logging.info(f"The target phrase: {targetPhrase} has been detected")
                 #check timestamp if within 24 hours do not alert
                 timestamp_str = timestamp
-                print(timestamp_str)
-                print(timestamp)
+                
                 timestamp = datetime.strptime(timestamp_str, "%Y-%m-%d %H:%M:%S")
 
                 current_time = datetime.now()
 
                 if current_time - timestamp < timedelta(hours=24):
                     # The timestamp is within the last 24 hours
-                    print("Timestamp is within the last 24 hours.")
+                    logging.info("Timestamp is within the last 24 hours.")
                     time.sleep(20)
                 else:
-                    print("Timestamp is older than 24 hours.") 
+                    logging.info("Timestamp is older than 24 hours.") 
                     # Create new timestamp
                     new_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     # Update the timestamp in the current row
                     row[2] = new_timestamp
+                    logging.info(f"Timestamp updated: {new_timestamp}")
 
                     # Write the updated rows back to the CSV file
                     with open("targets.csv", "w", newline='') as file:
@@ -96,9 +106,16 @@ class CheckForChange():
                 time.sleep(20)
 
     def alert(self, website):
-        print("cats are awesome")
-        #alertProcessInstance = alertProccess(website)
+        logging.info("Alert Process has been started")
+        alertProcessInstance = alertProccess(website)
         time.sleep(20)
+
+# Logging
+logging.basicConfig(filename='checkforchange.log', 
+                    filemode='a', 
+                    level=logging.INFO,
+                    format='%(asctime)s %(levelname)s %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S')
 
 # Initialise an empty list to store rows
 rows = []  

@@ -2,23 +2,21 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
+  <a href="https://github.com/Dr-Passmore/Check-for-change">
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">Check for change - Raspberry Pi</h3>
 
   <p align="center">
     An awesome README template to jumpstart your projects!
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/Dr-Passmore/Check-for-change"><strong>Explore the Code »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
+    <a href="https://github.com/Dr-Passmore/Check-for-change/issues">Report Bug</a>
     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+    <a href="https://github.com/Dr-Passmore/Check-for-change/issues">Request Feature</a>
   </p>
 </div>
 
@@ -55,18 +53,20 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+<div align="center">
+  <a href="https://github.com/Dr-Passmore/Check-for-change">
+    <img src="images/textScreenshot.jpg" alt="Text Screenshot" width="200" height="360">
+  </a>
+</div>
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+Due to the ongoing chip shortage, getting hold of a Raspberry Pi from an official supplier has been next to impossible. I was fortunate to pick up Raspberry Pi 4 from thepihut.com, as they very briefly had some in stock recently.
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+To make sure I had the opportunity to pick up a Raspberry Pi 4 or Pi Zero 2 when they next go into stock, I started this quick project. The check for change is a simple project that takes the visable text of the webpage and compares to the previous version, if a change has taken place and the item is in stock then the python script notifies via text message.
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
+Key goals of this project:
+* Only notifies if the product is in stock
+* Send a text message alert
+* To be run regularly on a Raspberry Pi
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

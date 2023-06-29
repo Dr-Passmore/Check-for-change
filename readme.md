@@ -74,8 +74,6 @@ Key goals of this project:
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
 This project has been built with Requests to get a copy of the webpage and Beautiful Soup to get the visible text. When a targeted item is in stock the Vonage Communications API is used to send text messages to alert that an item is in stock. 
 
 * [Vonage API](https://www.vonage.co.uk/communications-apis/) 
@@ -90,6 +88,9 @@ This project has been built with Requests to get a copy of the webpage and Beaut
 <!-- GETTING STARTED -->
 ## Getting Started
 
+To get set up, I have cloned the repo onto a Raspberry Pi, and added as Cron job to run checkforchange.sh. 
+
+The Cron job is set to run every 30 minutes with: ** */30 * * * * ** 
 This is an example of how you may give instructions on setting up your project locally.
 To get a local copy up and running follow these simple example steps.
 

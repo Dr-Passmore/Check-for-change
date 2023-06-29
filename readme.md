@@ -9,7 +9,7 @@
   <h3 align="center">Check for change - Raspberry Pi</h3>
 
   <p align="center">
-    An in stock detector to enable the opportunity to purchase a Raspberry Pi 4 or Pi Zero
+    Stock detector to enable the opportunity to purchase a Raspberry Pi 4 or Pi Zero 2
     <br />
     <a href="https://github.com/Dr-Passmore/Check-for-change"><strong>Explore the Code »</strong></a>
     <br />
@@ -76,14 +76,12 @@ Key goals of this project:
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+This project has been built with Requests to get a copy of the webpage and Beautiful Soup to get the visible text. When a targeted item is in stock the Vonage Communications API is used to send text messages to alert that an item is in stock. 
+
+* [Vonage API](https://www.vonage.co.uk/communications-apis/) 
+* [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/#)
+* [Requests](https://requests.readthedocs.io/en/latest/)
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

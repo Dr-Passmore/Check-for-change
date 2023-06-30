@@ -90,17 +90,32 @@ This project has been built with Requests to get a copy of the webpage and Beaut
 
 To get set up, I have cloned the repo onto a Raspberry Pi, and added as Cron job to run checkforchange.sh. 
 
-The Cron job is set to run every 30 minutes with: ** */30 * * * * ** 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+The Cron job is set to run every 30 minutes with: __*/30 * * * *__ 
+
+You will need to create an account with [Vonage](https://www.vonage.co.uk/communications-apis/) and set up the communication API. You will need the secret and key for the API. Vonage has been selected as they provide €2 free credit, without a payment method required, and each text costs €0.04. 
+
+Once the repo is cloned onto the Raspberry Pi you will need to manually run the main.py script, which will on first run ask for the API information and phone number. This information will be added to the newly created config.ini file. If any details need to be updated in future, you can edit them in the config.ini file.  
+
+[Vonage API]
+key = 
+secret = 
+countrycode = 
+phonenumber = 
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+Install the required packages using:
+
+__pip install -r requirements.txt__
+
+The provided requirements will install the following:
+
+* vonage>=2.0.0
+* configparser>=5.0.2
+* beautifulsoup4>=4.9.0
+* requests>=2.25.0
+
+
 
 ### Installation
 
